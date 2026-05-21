@@ -1,0 +1,28 @@
+name: ETL Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  schedule:
+    - cron: '0 21 * * *'
+
+  workflow_dispatch:
+
+jobs:
+
+  etl:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t etl-pipeline .
+
+      - name: Run ETL container
+        run: docker run etl-pipeline
