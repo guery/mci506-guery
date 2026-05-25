@@ -1,0 +1,29 @@
+name: NASA ETL Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  nasa-etl:
+    runs-on: ubuntu-latest
+
+    env:
+      NASA_API_KEY: ${{ secrets.NASA_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run NASA extraction
+        run: python scripts/nasa_extract.py
